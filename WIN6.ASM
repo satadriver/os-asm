@@ -3424,6 +3424,7 @@ mov ds,ax
 mov esi,offset FileSubDirBuf
 call FileProcess
 KbdCommandEnd:
+mov esi,0
 call RestoreDeskTopBkgrd
 pop es
 pop ds
@@ -3715,6 +3716,8 @@ mov bh,1
 int 8fh
 
 call FileProcess
+;jmp GetMouseAction
+mov esi,0
 call RestoreDeskTopBkgrd
 pop gs
 pop fs
@@ -3777,6 +3780,9 @@ cmp eax,-1
 jz ReturnToDeskTop
 test eax,1
 jz ReturnToDeskTop
+mov esi,100000h
+call RestoreDeskTopBkgrd
+
 pop gs
 pop fs
 pop es
@@ -3918,6 +3924,8 @@ BmpFile:
 pushad
 push ds
 push es
+mov edi,100000h
+call SaveDeskTopBkgrd
 mov ax,es:[1ch]
 cmp ax,2
 jz BmpFileEnd
@@ -4365,6 +4373,7 @@ mov bh,1
 int 8fh
 call BmpFile
 call ShowMyComputer
+mov edi,0
 call SaveDeskTopBkgrd
 cli
 mov bh,1
@@ -4387,7 +4396,6 @@ mov ds,ax
 mov ax,DeskTopBackupSeg
 mov es,ax
 mov esi,0
-mov edi,0
 mov ecx,640*448
 rep movsd
 pop es
@@ -4406,7 +4414,6 @@ mov ax,VesaSeg
 mov es,ax
 mov ax,DeskTopBackupSeg
 mov ds,ax
-mov esi,0
 mov edi,0
 mov ecx,640*448
 rep movsd
